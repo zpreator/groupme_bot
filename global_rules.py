@@ -21,11 +21,11 @@ def run(data, bot_info, send):
 def check_responses(path, msg):
     with open(path, 'r') as file:
         for line in file:
-            if line[0] != '#':
+            if line[0] != '#' and line != '\n' and line != '':
                 trigger, response = line.split(':')
                 if trigger.lower() in msg.lower():
                     return response
     return None
 
 if __name__ == '__main__':
-    print(check_responses('responses.txt', 'hellothere'))
+    print(check_responses('responses.txt', 'mckensie'))
