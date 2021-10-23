@@ -17,7 +17,7 @@ def run(data, bot_info, send):
         return True
 
     if '.get_bot_id' in message:
-        send('bot_id: {0}'.format(str(sender)))
+        send('bot_id: {0}'.format(str(sender)), bot_info[0])
         return True
 
     # Checks all the possible triggers from responses.txt
