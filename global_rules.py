@@ -1,6 +1,8 @@
 def run(data, bot_info, send):
-
+    count = 0
     message = data['text']
+
+    sender = data['sender_id']
 
     if message == '.help':
         help_message = "Help:\n.help  -->  This screen\n.test  -->  Try it!\nOtherwise, repeats your message."
@@ -12,7 +14,10 @@ def run(data, bot_info, send):
         return True
 
     if message == '.details':
-        send(str(data), bot_info[0])
+        count += 1
+        if count > 2:
+            return True
+        send(str(sender) + '.details', bot_info[0])
         return True
 
     # Checks all the possible triggers from responses.txt
