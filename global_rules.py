@@ -11,10 +11,15 @@ def run(data, bot_info, send):
         send("Hi there! Your bot is working, you should start customizing it now.", bot_info[0])
         return True
 
+    if message == '.details':
+        send(str(data), bot_info[0])
+        return True
+
     # Checks all the possible triggers from responses.txt
-    result = check_responses('responses.txt', message)
-    if result is not None:
-        send(result, bot_info[0])
+    # result = check_responses('responses.txt', message)
+    # if result is not None:
+    #     send(result, bot_info[0])
+        # return True
     return True
 
 
