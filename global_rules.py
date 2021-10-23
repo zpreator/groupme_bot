@@ -3,6 +3,11 @@ def run(data, bot_info, send):
 
     sender = data['sender_id']
 
+    # Check if bot is sender, do exit if so (to avoid feedback loops)
+    if sender == '861991':
+        print('From bot')
+        return True
+
     if message == '.help':
         help_message = "Help:\n.help  -->  This screen\n.test  -->  Try it!\nOtherwise, repeats your message."
         send(help_message, bot_info[0])
@@ -21,10 +26,10 @@ def run(data, bot_info, send):
         return True
 
     # Checks all the possible triggers from responses.txt
-    # result = check_responses('responses.txt', message)
-    # if result is not None:
-    #     send(result, bot_info[0])
-        # return True
+    result = check_responses('responses.txt', message)
+    if result is not None:
+        send(result, bot_info[0])
+        return True
     return True
 
 
