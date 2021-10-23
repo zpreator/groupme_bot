@@ -1,5 +1,4 @@
 def run(data, bot_info, send):
-    count = 0
     message = data['text']
 
     sender = data['sender_id']
@@ -14,10 +13,11 @@ def run(data, bot_info, send):
         return True
 
     if message == '.details':
-        count += 1
-        if count > 2:
-            return True
-        send(str(sender) + '.details', bot_info[0])
+        send('user_id: {0} .get_bot_id'.format(str(sender)), bot_info[0])
+        return True
+
+    if '.get_bot_id' in message:
+        send('bot_id: {0}'.format(str(sender)))
         return True
 
     # Checks all the possible triggers from responses.txt
