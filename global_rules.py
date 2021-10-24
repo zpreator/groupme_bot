@@ -38,6 +38,8 @@ def run(data, bot_info, send):
         send(msg, bot_info[0])
 
     if message.lower() == '.swerve':
+        print('Attempting to make markov chain')
+        print('Using markovify v {0}'.format(markovify.__version__))
         msg = make_markov_chain()
         print(msg)
         send(msg, bot_info[0])
@@ -83,6 +85,7 @@ def get_response():
 def make_markov_chain():
     with open('groupme_response.txt', 'r') as file:
         text = file.read()
+    print('Text preview: {0}'.format(text[:100]))
     text_model = markovify.NewlineText(text)
     response = text_model.make_short_sentence(280)
     return response
