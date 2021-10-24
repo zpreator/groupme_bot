@@ -39,6 +39,7 @@ def run(data, bot_info, send):
 
     if message.lower() == '.swerve':
         msg = make_markov_chain()
+        print(msg)
         send(msg, bot_info[0])
 
     if '.get_bot_id' in message:
