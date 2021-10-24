@@ -8,6 +8,7 @@ import sys
 import requests
 import importlib
 from flask import Flask, request
+from groupme_config import readKeys, create_groupme_api
 
 #######################################################################################################
 ######################## Customization ################################################################
@@ -36,6 +37,8 @@ DEBUG = (True if os.getenv('BOT_DEBUG') == 'True' else False)
 POST_TO = 'https://api.groupme.com/v3/bots/post'
 GROUP_RULES = {}
 BOT_INFO = {}
+KEYS = {}
+GROUP = {}
 
 if DEBUG:
     print(errcol.debug + "Web concurrency is set to " + os.getenv('WEB_CONCURRENCY') + errcol.tail)
@@ -46,6 +49,10 @@ if DEBUG:
 for bot in (os.getenv('BOT_INFO')).split('; '):
     info = bot.split(', ')
     BOT_INFO[info[0]] = (info[1], info[2])
+
+# Gets the groupme api information
+KEYS = readKeys()
+GROUP = create_groupme_api()
 
 # When you create global rules for the bot, they will be imported here.
 try:
@@ -102,11 +109,17 @@ def send_message(msg, bot_id):
             }
     requests.post(POST_TO, json=data)
     
-def send_image(image, bot_id):
+def send_image(image_url, msg, bot_id):
     data = {
             'bot_id': bot_id,
-            'attachments': [image],
-            }
+            'text': msg,
+            'attachments': [
+                {
+                    'type': 'image',
+                    'url': image_url,
+                }
+            ],
+        }
     requests.post(POST_TO, json=data)
 
 #######################################################################################################
@@ -128,6 +141,6 @@ def webhook():
         if GROUP_RULES[data['group_id']].run(data, BOT_INFO[data['group_id']], send_message):
             return "ok", 200
 
-    GLOBAL_RULES.run(data, BOT_INFO[data['group_id']], send_message, send_image)
+    GLOBAL_RULES.run(data, BOT_INFO[data['group_id']], GROUP, send_message, send_image)
 
     return "ok", 200

@@ -1,9 +1,10 @@
 import random
 import markovify
-from config import create_groupme_api
+import pandas as pd
+from groupme_config import getAllMessages, getRandomMeme
 
 
-def run(data, bot_info, send, send_image):
+def run(data, bot_info, group, send, send_image):
     message = data['text']
 
     sender = data['sender_id']
@@ -46,8 +47,10 @@ def run(data, bot_info, send, send_image):
 
     if message.lower() == '.meme':
         print('Retrieving a meme')
-        image = get_random_meme()
-        send_image(image, bot_info[0])
+        image_url, user = get_random_meme(group)
+        print('Sending meme')
+        msg = 'Sent by {0}'.format(user)
+        send_image(image_url, msg, bot_info[0])
         
     if '.get_bot_id' in message:
         send('bot_id: {0}'.format(str(sender)), bot_info[0])
@@ -96,28 +99,10 @@ def make_markov_chain():
     return response
     
 
-def getRandomMeme(messages_df, min_likes=0):
-    if min_likes == None:
-        min_likes = 0
-    attach_df = messages_df[messages_df['attachments'].map(len) > 0]
-    attach_df = attach_df[attach_df['fav_num'] >= min_likes]
-    loop = True
-    while loop:
-        rand = attach_df.sample()
-        row = rand.iloc[0]
-        attachments = row['attachments'][0]
-        try:
-            url = attachments['url']
-            loop = False
-        except:
-            loop = True
-    if pd.isna(row['text']):
-        text = ''
-    else:
-        text = '"' + str(row['text']) + '"'
-    user = row['name']
-    avatar = row['avatar_url']
-    return url, user, avatar, text
+def get_random_meme(group):
+    messages_df = getAllMessages(group)
+    url, user, avatar, text = getRandomMeme(messages_df, 3)
+    return url, user
 
 
 if __name__ == '__main__':
