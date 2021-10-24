@@ -8,7 +8,6 @@ import sys
 import requests
 import importlib
 from flask import Flask, request
-from groupme_config import readKeys, create_groupme_api
 
 #######################################################################################################
 ######################## Customization ################################################################
@@ -49,10 +48,6 @@ if DEBUG:
 for bot in (os.getenv('BOT_INFO')).split('; '):
     info = bot.split(', ')
     BOT_INFO[info[0]] = (info[1], info[2])
-
-# Gets the groupme api information
-KEYS = readKeys()
-GROUP = create_groupme_api()
 
 # When you create global rules for the bot, they will be imported here.
 try:
