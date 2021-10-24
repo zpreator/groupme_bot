@@ -13,7 +13,7 @@ def run(data, bot_info, send):
         print('From bot')
         return True
 
-    with open('groupme_response.txt', 'w') as file:
+    with open('groupme_response.txt', 'a') as file:
         file.write('{0}\n'.format(message))
 
     if message == '.help':
