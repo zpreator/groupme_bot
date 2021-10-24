@@ -1,3 +1,5 @@
+import random
+
 def run(data, bot_info, send):
     message = data['text']
 
@@ -21,6 +23,10 @@ def run(data, bot_info, send):
         send('user_id: {0} .get_bot_id'.format(str(sender)), bot_info[0])
         return True
 
+    if message.lower() == '.joke' or message.lower() == '.jokes':
+        msg = get_random_joke()
+        send(msg, bot_info[0])
+
     if '.get_bot_id' in message:
         send('bot_id: {0}'.format(str(sender)), bot_info[0])
         return True
@@ -41,6 +47,15 @@ def check_responses(path, msg):
                 if trigger.lower() in msg.lower():
                     return response
     return None
+
+
+def get_random_joke():
+    with open('jokes.txt', 'r') as file:
+        lines = file.readlines()
+        index = random.randint(0, len(lines) - 1)
+        selected_line = lines[index]
+        return selected_line
+
 
 if __name__ == '__main__':
     print(check_responses('responses.txt', 'mckensie'))
