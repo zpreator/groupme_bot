@@ -1,4 +1,6 @@
 import random
+import markovify
+
 
 def run(data, bot_info, send):
     message = data['text']
@@ -10,6 +12,9 @@ def run(data, bot_info, send):
     if sender == '861991':
         print('From bot')
         return True
+
+    with open('groupme_response.txt', 'w') as file:
+        file.write('{0}\n'.format(message))
 
     if message == '.help':
         help_message = "Help:"\
@@ -33,7 +38,7 @@ def run(data, bot_info, send):
         send(msg, bot_info[0])
 
     if message.lower() == '.swerve':
-        # msg = get_response()
+        msg = make_markov_chain()
         send('Sorry, this is still in development', bot_info[0])
 
     if '.get_bot_id' in message:
@@ -74,5 +79,13 @@ def get_response():
         return selected_line
 
 
+def make_markov_chain():
+    with open('groupme_response.txt', 'r') as file:
+        text = file.read()
+    text_model = markovify.NewlineText(text)
+    response = text_model.make_short_sentence(280)
+    return response
+
 if __name__ == '__main__':
-    print(check_responses('responses.txt', 'mckensie'))
+    # print(check_responses('responses.txt', 'mckensie'))
+    print(make_markov_chain())
