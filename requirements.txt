@@ -3,4 +3,4 @@ Flask>=0.12.3
 gunicorn==19.6.0
 markovify==0.9.3
 pandas==1.1.5
-groupy==0.10.3
+groupy==0.5.6
