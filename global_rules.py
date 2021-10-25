@@ -11,7 +11,8 @@ def run(data, bot_info, send, send_image):
     sender_name = data['name']
 
     # Check if bot is sender, do exit if so (to avoid feedback loops)
-    if sender == '861991' or '861993':
+    if (sender == '861991') or (sender == '861993'):
+        print('sender_name: {0}'.format(sender_name))
         print('From bot')
         return True
 
