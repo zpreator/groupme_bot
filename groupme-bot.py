@@ -101,6 +101,19 @@ def send_message(msg, bot_id):
             'text' : msg,
             }
     requests.post(POST_TO, json=data)
+    
+def send_image(image_url, msg, bot_id):
+    data = {
+            'bot_id': bot_id,
+            'text': msg,
+            'attachments': [
+                {
+                    'type': 'image',
+                    'url': image_url,
+                }
+            ],
+        }
+    requests.post(POST_TO, json=data)
 
 #######################################################################################################
 ######################## The actual bot ###############################################################
@@ -121,6 +134,6 @@ def webhook():
         if GROUP_RULES[data['group_id']].run(data, BOT_INFO[data['group_id']], send_message):
             return "ok", 200
 
-    GLOBAL_RULES.run(data, BOT_INFO[data['group_id']], send_message)
+    GLOBAL_RULES.run(data, BOT_INFO[data['group_id']], send_message, send_image)
 
     return "ok", 200
