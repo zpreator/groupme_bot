@@ -23,12 +23,13 @@ def run(data, bot_info, send, send_image):
                        "\n.help   -->  This screen"\
                        "\n.test   -->  For debugging"\
                        "\n.joke   -->  Gets a Dad joke"\
-                       "\n.swerve -->  Compiles a response based on chat history"
+                       "\n.swerve -->  Compiles a response based on chat history"\
+                       "\n.meme   -->  Gets a random meme from our archives"
         send(help_message, bot_info[0])
         return True
 
     if message == '.test':
-        send("Hi there! Your bot is working, you should start customizing it now.", bot_info[0])
+        send("You're a wizard Harry! And you're a harry Wizard", bot_info[0])
         return True
 
     if message == '.details':
