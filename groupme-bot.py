@@ -36,8 +36,6 @@ DEBUG = (True if os.getenv('BOT_DEBUG') == 'True' else False)
 POST_TO = 'https://api.groupme.com/v3/bots/post'
 GROUP_RULES = {}
 BOT_INFO = {}
-KEYS = {}
-GROUP = {}
 
 if DEBUG:
     print(errcol.debug + "Web concurrency is set to " + os.getenv('WEB_CONCURRENCY') + errcol.tail)
@@ -136,6 +134,6 @@ def webhook():
         if GROUP_RULES[data['group_id']].run(data, BOT_INFO[data['group_id']], send_message):
             return "ok", 200
 
-    GLOBAL_RULES.run(data, BOT_INFO[data['group_id']], GROUP, send_message, send_image)
+    GLOBAL_RULES.run(data, BOT_INFO[data['group_id']], send_message, send_image)
 
     return "ok", 200

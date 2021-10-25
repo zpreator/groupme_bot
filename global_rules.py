@@ -1,10 +1,10 @@
 import random
 import markovify
 import pandas as pd
+import groupme_config
 
 
-
-def run(data, bot_info, group, send, send_image):
+def run(data, bot_info, send, send_image):
     message = data['text']
 
     sender = data['sender_id']
@@ -47,7 +47,7 @@ def run(data, bot_info, group, send, send_image):
 
     if message.lower() == '.meme':
         print('Retrieving a meme')
-        image_url, user = get_random_meme(group)
+        image_url, user = get_random_meme()
         print('Sending meme')
         msg = 'Sent by {0}'.format(user)
         send_image(image_url, msg, bot_info[0])
@@ -99,10 +99,10 @@ def make_markov_chain():
     return response
     
 
-def get_random_meme(group):
-    from groupme_config import getAllMessages, getRandomMeme
-    messages_df = getAllMessages(group)
-    url, user, avatar, text = getRandomMeme(messages_df, 3)
+def get_random_meme():
+    group = groupme_config.create_groupme_api()
+    messages_df = groupme_config.getAllMessages(group)
+    url, user, avatar, text = groupme_config.getRandomMeme(messages_df, 3)
     return url, user
 
 
