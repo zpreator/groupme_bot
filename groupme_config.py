@@ -27,10 +27,27 @@ def getAllMessages(group):
                       'Shad Karlson, a liberal']
     df_to_delete = messages_df[messages_df['name'].isin(list_to_delete)].index
     messages_df = messages_df.drop(df_to_delete)
-    # setFavNum(messages_df)
+    setFavNum(messages_df)
     messages_df.to_csv('data.csv')
     return messages_df
     
+def setFavNum(messages_df):
+    favorites = messages_df['favorited_by'].tolist()
+    fav_num = []
+    favorited_by = []
+    for x in favorites:
+        try:
+            favs = eval(x)
+            favorited_by.append(favs)
+            fav_num.append(len(favs))
+        except:
+            favs = x
+            favorited_by.append(favs)
+            fav_num.append(len(favs))
+    messages_df['fav_num'] = fav_num
+    messages_df['favorited_by'] = favorited_by
+    return messages_df
+
 def getRandomMeme(messages_df, min_likes=0):
     if min_likes == None:
         min_likes = 0
